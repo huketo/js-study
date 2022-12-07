@@ -282,3 +282,143 @@ function summarizeCartSpread(cart) {
   };
 }
 ```
+
+## 펼침 연산자로 정렬에 의한 혼란을 피하라
+
+Spread 연산자로 사본을 만들고 사본을 정렬하자.
+
+```js
+// problem
+const staff = [
+  {
+    name: 'Joe',
+    years: 10,
+  },
+  {
+    name: 'Theo',
+    years: 5,
+  },
+  {
+    name: 'Dyan',
+    years: 10,
+  },
+];
+
+function sortByYears(a, b) {
+  if (a.years === b.years) {
+    return 0;
+  }
+  return a.years - b.years;
+}
+
+const sortByName = (a, b) => {
+  if (a.name === b.name) {
+    return 0;
+  }
+  return a.name > b.name ? 1 : -1;
+};
+
+staff.sort(sortByYears);
+// [
+//   {
+//     name: 'Theo',
+//     years: 5
+//   },
+//   {
+//     name: 'Joe',
+//     years: 10
+//   },
+//   {
+//     name: 'Dyan',
+//     years: 10
+//   },
+// ];
+
+staff.sort(sortByName);
+// [
+//   {
+//     name: 'Dyan',
+//     years: 10
+//   },
+//   {
+//     name: 'Joe',
+//     years: 10
+//   },
+//   {
+//     name: 'Theo',
+//     years: 5
+//   },
+// ];
+
+staff.sort(sortByYears);
+// [
+//   {
+//     name: 'Theo',
+//     years: 5
+//   },
+//   {
+//     name: 'Dyan',
+//     years: 10
+//   },
+//   {
+//     name: 'Joe',
+//     years: 10
+//   },
+// ]
+
+console.log(staff);
+// [
+//   {
+//     name: 'Theo',
+//     years: 5
+//   },
+//   {
+//     name: 'Dyan',
+//     years: 10
+//   },
+//   {
+//     name: 'Joe',
+//     years: 10
+//   },
+// ]
+
+// 원본 배열을 바꿔버린다.
+```
+
+```js
+// solve
+
+[...staff].sort(sortByYears);
+// [
+//   {
+//     name: 'Theo',
+//     years: 5
+//   },
+//   {
+//     name: 'Joe',
+//     years: 10
+//   },
+//   {
+//     name: 'Dyan',
+//     years: 10
+//   },
+// ];
+
+conosole.log(staff);
+// [
+//   {
+//     name: 'Joe',
+//     years: 10,
+//   },
+//   {
+//     name: 'Theo',
+//     years: 5,
+//   },
+//   {
+//     name: 'Dyan',
+//     years: 10,
+//   },
+// ];
+
+// 원본 배열은 그대로이다.
+```
