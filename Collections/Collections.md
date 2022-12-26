@@ -256,7 +256,7 @@ const book2 = {
 
 // 값 변경
 const update2 = { ...book2, title: "Reasons & Persons" };
-// { 
+// {
 //   title: 'Reasons & Persons',
 //   author: 'Derek Parfit'
 // }
@@ -274,8 +274,10 @@ const defaultEmployee = {
 };
 
 const employee = {
-  name: { ...defualtEmployee.name },
-  years: defaultEmployee.years,
+  ...defaultEmployee,
+  name: {
+    ...defualtEmployee.name,
+  },
 };
 
 employee.name.first = "Joe";
@@ -305,10 +307,12 @@ console.log(defaultEmployee);
 `Map`은 `Object`와 비슷하게 `key-value` 방식의 Collection 이다.
 
 ### `Object`와 `Map` 비교
+
 - `Object`의 키는 `String`, `Map`의 키는 모든 값(`any`)을 가질 수 있다.
 - `Object`는 크기를 수동으로 추적해야하지만, `Map`은 크기를 쉽게 얻을 수 있다.
 
 ### `Map`을 사용하는 경우
+
 - `key-value` 쌍이 자주 추가 되거나 삭제되는 경우
 - `key`가 문자열이 아니거나, 모든 `key`가 동일한 타입이며 모든 `value`가 동일한 타입일 경우
 
@@ -334,7 +338,7 @@ const dogs = [
     견종: "레브라도레트리버",
     색상: "갈색",
   },
-]
+];
 ```
 
 ### `Object`로 강아지 콜렉션 다루기
@@ -387,13 +391,11 @@ filters1.get("크기");
 // "대형견"
 
 // Map 데이터 추가 2
-const filters2 = new Map(
-  [
-    ["견종", "레브라도레트리버"],
-    ["크기", "대형견"],
-    ["색상", "갈색"],
-  ]
-)
+const filters2 = new Map([
+  ["견종", "레브라도레트리버"],
+  ["크기", "대형견"],
+  ["색상", "갈색"],
+]);
 filters2;
 // Map(3) { '견종' => '레브라도레트리버', '크기' => '대형견', '색상' => '갈색' }
 filters2.get("색상");
@@ -409,7 +411,6 @@ filters2.get("색상");
 filters2.clear();
 filters2;
 // Map(0) {}
-
 ```
 
 ### `Map`으로 강아지 컬렉션 함수를 재구성
@@ -438,7 +439,7 @@ function clearFilters(filters) {
 const errors = {
   100: "이름이 잘못되었습니다.",
   110: "이름에는 문자만 입력할 수 있습니다.",
-  200: "색상이 잘못되었습니다."
+  200: "색상이 잘못되었습니다.",
 };
 
 function isDataVaild(data) {
@@ -480,7 +481,7 @@ errors.keys();
 const filters = {
   색상: "검정색",
   견종: "레브라도레트리버",
-}
+};
 
 function getAppliedFilters(filters) {
   const keys = Object.keys(filters);
@@ -489,12 +490,13 @@ function getAppliedFilters(filters) {
   for (const key of keys) {
     applied.push(`${key}: ${filters[key]}`);
   }
-  return `선택한 조건은 ${applied.join(', ')} 입니다.`
+  return `선택한 조건은 ${applied.join(", ")} 입니다.`;
 }
 
 getAppliedFilters(filters);
 // '선택한 조건은 견종: 레브라도레트리버, 색상: 검정색 입니다.'
 ```
+
 > `for...of` 반복문: 컬렉션의 각값을 하나 씩 반환한다. `Key` 값이 `[Symbol.iterable]` 속성을 가지고 있어야 한다.
 
 ```js
@@ -503,12 +505,10 @@ getAppliedFilters(filters);
 //   .set("색상", "검정색")
 //   .set("견종", "레브라도레트리버");
 
-const filters = new Map(
-  [
-    ["색상", "검정색"],
-    ["견종", "레브라도레트리버"],
-  ]
-);
+const filters = new Map([
+  ["색상", "검정색"],
+  ["견종", "레브라도레트리버"],
+]);
 
 function checkFilters(filters) {
   for (const entry of filters) {
@@ -558,12 +558,12 @@ getSortedAppliedFilters(filters);
 function getAppliedFilters(filters) {
   const applied = [...filters].map(([key, value]) => {
     return `${key}: ${value}`;
-  })
-  return `선택한 조건은 ${applied.join(", ")} 입니다.`
+  });
+  return `선택한 조건은 ${applied.join(", ")} 입니다.`;
 }
 
 getAppliedFilters(filters);
-'선택한 조건은 색상: 검정색, 견종: 레브라도레트리버 입니다.'
+("선택한 조건은 색상: 검정색, 견종: 레브라도레트리버 입니다.");
 
 function sortByKey(a, b) {
   return a[0] > b[0] ? 1 : -1;
@@ -573,8 +573,8 @@ function getSortedAppliedFilters(filters) {
   const applied = [...filters]
     .sort(sortByKey)
     .map(([key, value]) => `${key}: ${value}`)
-    .join(', ');
-  return `선택한 조건은 ${applied} 입니다.`
+    .join(", ");
+  return `선택한 조건은 ${applied} 입니다.`;
 }
 
 getSortedAppliedFilters(filters);
@@ -592,13 +592,11 @@ getSortedAppliedFilters(filters);
 ## `Map` 생성 시 부수 효과를 피하라
 
 ```js
-const defaults = new Map(
-  [
-    ["색상", "갈색"],
-    ["견종", "비글"],
-    ["지역", "부산"],
-  ]
-)
+const defaults = new Map([
+  ["색상", "갈색"],
+  ["견종", "비글"],
+  ["지역", "부산"],
+]);
 
 const filters = new Map().set("색상", "검정색");
 
@@ -615,16 +613,14 @@ filters;
 // Map(3) { '색상' => '검정색', '견종' => '비글', '지역' => '부산' }
 ```
 
-복사본을 만들어서 조작하는 것으로 변경 
+복사본을 만들어서 조작하는 것으로 변경
 
 ```js
-const defaults = new Map(
-  [
-    ["색상", "갈색"],
-    ["견종", "비글"],
-    ["지역", "부산"],
-  ]
-)
+const defaults = new Map([
+  ["색상", "갈색"],
+  ["견종", "비글"],
+  ["지역", "부산"],
+]);
 
 const filters = new Map().set("색상", "검정색");
 
@@ -673,26 +669,26 @@ const dogs = [
     이름: "맥스",
     크기: "소형견",
     견종: "보스턴테리어",
-    색상: "검정색"
+    색상: "검정색",
   },
   {
     이름: "도니",
     크기: "대형견",
     견종: "래브라도레트리버",
-    색상: "검정색"
+    색상: "검정색",
   },
   {
     이름: "섀도",
     크기: "중형견",
     견종: "래브라도레트리버",
-    색상: "갈색"
+    색상: "갈색",
   },
 ];
 
 // 색상 목록만 수집할려고 할 때
 // # 1
 function getColors(dogs) {
-  return dogs.map(dog => dog["색상"]);
+  return dogs.map((dog) => dog["색상"]);
 }
 getColors(dogs);
 // ! 중복값이 존재
@@ -712,7 +708,6 @@ const colors = getColors(dogs);
 getUnique(colors);
 // [ '검정색', '갈색' ]
 ```
-
 
 ```js
 // # 2
@@ -752,5 +747,3 @@ function getUniqueColors(dogs) {
 getUniqueColors(dogs);
 // [ '검정색', '갈색' ]
 ```
-
-
